@@ -28,9 +28,9 @@ class PayboxGatewayFactory extends GatewayFactory
             'payum.action.notify' => new NotifyAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
-            'payum.template.chosse_card_type' => '@PayumPaybox/Action/choose_payment_type.html.twig',
+            'payum.template.choose_card_type' => '@PayumPaybox/Action/choose_payment_type.html.twig',
             'payum.action.choose_payment_type' => function (ArrayObject $config) {
-                return new ChoosePaymentTypeAction($config['payum.template.chosse_card_type']);
+                return new ChoosePaymentTypeAction($config['payum.template.choose_card_type']);
             }
         ]);
 
