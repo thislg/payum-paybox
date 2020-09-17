@@ -1,9 +1,9 @@
 {
-    "name": "marem/payum-paybox",
+    "name": "lephare/payum-paybox",
     "type": "project",
     "description": "Paybox extension for Payum",
     "keywords": ["payum", "paybox", "payment"],
-    "homepage": "https://github.com/remyma/payum-paybox",
+    "homepage": "https://github.com/le-phare/payum-paybox",
     "license": "MIT",
     "authors": [
         {

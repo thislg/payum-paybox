@@ -3,9 +3,9 @@ namespace Marem\PayumPaybox;
 
 use Marem\PayumPaybox\Action\AuthorizeAction;
 use Marem\PayumPaybox\Action\CancelAction;
+use Marem\PayumPaybox\Action\CaptureAction;
 use Marem\PayumPaybox\Action\ChoosePaymentTypeAction;
 use Marem\PayumPaybox\Action\ConvertPaymentAction;
-use Marem\PayumPaybox\Action\CaptureAction;
 use Marem\PayumPaybox\Action\NotifyAction;
 use Marem\PayumPaybox\Action\RefundAction;
 use Marem\PayumPaybox\Action\StatusAction;
@@ -41,7 +41,7 @@ class PayboxGatewayFactory extends GatewayFactory
                 'identifiant' => '',
                 'hmac' => '',
                 'hash' => 'SHA512',
-                'retour' => 'Mt:M;Ref:R;Auto:A;error_code:E',
+                'retour' => 'Mt:M;Ref:R;Auto:A;error_code:E;type_carte:C',
                 'sandbox' => true,
                 'type_paiement' => '',
                 'type_carte' => ''
