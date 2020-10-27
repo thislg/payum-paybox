@@ -9,9 +9,8 @@ use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\ApiAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\Capture;
+use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\RenderTemplate;
 
@@ -20,8 +19,8 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
     use ApiAwareTrait;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     protected $templateName;
 
     /**
@@ -34,13 +33,12 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param ChoosePaymentType $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
-
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
@@ -48,17 +46,18 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
         $getHttpRequest = new GetHttpRequest();
         $this->gateway->execute($getHttpRequest);
 
-        /** if form has been submitted, set the payment type and card type to complete the payment details*/
-        if ($getHttpRequest->method == 'POST' && isset($getHttpRequest->request['paymentType'])) {
+        /* if form has been submitted, set the payment type and card type to complete the payment details*/
+        if ('POST' == $getHttpRequest->method && isset($getHttpRequest->request['paymentType'])) {
             $details[PayBoxRequestParams::PBX_TYPEPAIEMENT] = $getHttpRequest->request['paymentType'];
             $details[PayBoxRequestParams::PBX_TYPECARTE] = $getHttpRequest->request['cardType'];
-            return null;
+
+            return;
         }
 
-        $template = new RenderTemplate($this->templateName, array(
+        $template = new RenderTemplate($this->templateName, [
             'model' => $details,
             'actionUrl' => $request->getToken() ? $request->getToken()->getTargetUrl() : null,
-        ));
+        ]);
 
         $this->gateway->execute($template);
 
@@ -66,8 +65,8 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritdoc}
+     */
     public function supports($request)
     {
         return
@@ -75,5 +74,4 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
             $request->getModel() instanceof \ArrayAccess
             ;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Marem\PayumPaybox\Action;
 
 use Payum\Core\Action\ActionInterface;
@@ -8,28 +9,28 @@ use Payum\Core\Request\GetStatusInterface;
 
 class StatusAction implements ActionInterface
 {
-    const SUCCESS = "00000";
+    const SUCCESS = '00000';
 
-    const CONTACT_CARD_OWNER = "01";
+    const CONTACT_CARD_OWNER = '01';
 
-    const INVALID_TRANSACTION = "12";
+    const INVALID_TRANSACTION = '12';
 
-    const INVALID_AMOUNT = "13";
+    const INVALID_AMOUNT = '13';
 
-    const INVALID_HOLDER_NUMBER = "14";
+    const INVALID_HOLDER_NUMBER = '14';
 
-    const CUSTOM_CANCELATION = "17";
+    const CUSTOM_CANCELATION = '17';
 
-    const RETRY_LATER = "19";
+    const RETRY_LATER = '19';
 
-    const EXPIRED_CARD = "33";
+    const EXPIRED_CARD = '33';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param GetStatusInterface $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -37,20 +38,21 @@ class StatusAction implements ActionInterface
 
         if (null === $model['error_code']) {
             $request->markNew();
+
             return;
         }
 
         if (self::SUCCESS === $model['error_code']) {
             $request->markCaptured();
+
             return;
         }
 
         $request->markFailed();
-
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {

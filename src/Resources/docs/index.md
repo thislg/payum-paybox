@@ -26,11 +26,9 @@ sandbox | | set test mode | true
 
 ### ChoosePaymentType
 
-### CancelAction
-
-Todo : Not yet implemented
-
 ### NotifyAction
+
+### CancelAction
 
 Todo : Not yet implemented
 
