@@ -1,4 +1,5 @@
 <?php
+
 namespace Marem\PayumPaybox\Action;
 
 use Marem\PayumPaybox\Api;
@@ -9,10 +10,6 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\ApiAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Reply\HttpPostRedirect;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetHttpRequest;
 
@@ -26,21 +23,20 @@ class CaptureAction extends GatewayAwareAction implements ApiAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Capture $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        /** if no payment type provided in config, execute a choose payment type action
+        /* if no payment type provided in config, execute a choose payment type action
          so that user can choose the payment type*/
-        if ($details[PayBoxRequestParams::PBX_TYPEPAIEMENT] == null
-            && $this->api->getOptions()['type_paiement'] == null) {
+        if (null == $details[PayBoxRequestParams::PBX_TYPEPAIEMENT]
+            && null == $this->api->getOptions()['type_paiement']) {
             $choosePaymentTypeRequest = new ChoosePaymentType($details);
             $this->gateway->execute($choosePaymentTypeRequest);
         }
@@ -51,12 +47,12 @@ class CaptureAction extends GatewayAwareAction implements ApiAwareInterface
         if (isset($httpRequest->query['error_code'])) {
             $details->replace($httpRequest->query);
         } else {
-            $this->api->doPayment((array)$details);
+            $this->api->doPayment((array) $details);
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {

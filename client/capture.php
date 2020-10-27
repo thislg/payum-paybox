@@ -1,10 +1,10 @@
 <?php
+
 //capture.php
 
-use Payum\Core\Request\Capture;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Reply\ReplyInterface;
+use Payum\Core\Request\Capture;
 
 include 'config.php';
 
@@ -18,14 +18,14 @@ try {
         $payum->getHttpRequestVerifier()->invalidate($token);
     }
 
-    header("Location: " . $token->getAfterUrl());
+    header('Location: '.$token->getAfterUrl());
 } catch (HttpResponse $reply) {
     foreach ($reply->getHeaders() as $name => $value) {
         header("$name: $value");
     }
 
     http_response_code($reply->getStatusCode());
-    echo ($reply->getContent());
+    echo $reply->getContent();
 
     exit;
 } catch (ReplyInterface $reply) {
