@@ -158,7 +158,7 @@ class Api implements LoggerAwareInterface
     {
         // Si la clé est en ASCII, On la transforme en binaire
         $binKey = pack('H*', $hmac);
-        $msg = http_build_query($fields);
+        $msg = Tools::stringify($fields);
 
         return strtoupper(hash_hmac($fields[PayBoxRequestParams::PBX_HASH], $msg, $binKey));
     }
