@@ -1,4 +1,5 @@
 <?php
+
 // prepare.php
 
 include 'config.php';
@@ -21,9 +22,8 @@ $payment->setClientEmail('foo@example.com');
     'PBX_TYPECARTE' => 'VISA'
 ));*/
 
-
 $storage->update($payment);
 
 $captureToken = $payum->getTokenFactory()->createCaptureToken($gatewayName, $payment, 'done.php');
 
-header("Location: ".$captureToken->getTargetUrl());
+header('Location: '.$captureToken->getTargetUrl());
