@@ -60,21 +60,25 @@ class NotifyAction implements ApiAwareInterface, ActionInterface, GatewayAwareIn
         // check authorization number is existing
         if (false === isset($httpRequest->query['authorization_number'])) {
             $message = 'Notification invalid: authorization number invalid.';
-            $this->logger->error($message, $context);
+            $this->logger->notice($message, $context);
             throw new HttpResponse($message, 400);
         }
         // check error code equals to 00000
         $errorCode = $httpRequest->query['error_code'] ?? null;
         if ('00000' !== $errorCode) {
             $message = 'Notification invalid: transaction rejected, '.PayboxRetour::get($errorCode)->getReadable();
-            $this->logger->error($message, $context);
+            $this->logger->notice($message, $context);
             throw new HttpResponse($message, 400);
         }
         // check the amount equals the original amount
         $queryAmount = $httpRequest->query['amount'] ?? null;
-        if ($details['amount'] !== $queryAmount) {
+        if (isset($details['amount']) && $details['amount'] != $queryAmount) {
             $message = 'Notification invalid: transaction invalid, amount differs from original';
-            $this->logger->error($message, $context);
+            $this->logger->notice($message, array_merge($context, [
+                'query_amount' => $queryAmount,
+                'amount' => $details['amount'],
+            ]));
+
             throw new HttpResponse($message, 400);
         }
         $this->logger->info('Notification valid', $context);
